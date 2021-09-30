@@ -1,16 +1,15 @@
-# cmail
+# Cmail
 
-A new Flutter project.
+This is a clone of gmail app
 
-## Getting Started
+## Image
 
-This project is a starting point for a Flutter application.
+![CMAIL1](https://user-images.githubusercontent.com/71263421/135478022-abc4e2a9-c074-400a-91be-9b5e324452ed.jpg)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+- Light and dark themes available
+- 20+ screens
+- Fully fuctional
+- Can be able to star, archieve mails
+- Splash screen
+- Used provider for state management
