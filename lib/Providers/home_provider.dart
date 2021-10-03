@@ -1,3 +1,5 @@
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../exports.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -17,6 +19,8 @@ class HomeProvider extends ChangeNotifier {
   List<MailsModel> starredMails = [];
   List<MailsModel> archievedMails = [];
   List<MailsModel> mailsList = mails;
+
+  late GoogleSignInAccount user;
 
   var colors = {
     "a": Color(0xffF5BF26),
@@ -136,6 +140,11 @@ class HomeProvider extends ChangeNotifier {
     else if (index == 1)
       searchInText = "chat";
     else if (index == 2) searchInText = "rooms";
+    notifyListeners();
+  }
+
+  setUserAccount(GoogleSignInAccount selectedUser) {
+    user = selectedUser;
     notifyListeners();
   }
 }

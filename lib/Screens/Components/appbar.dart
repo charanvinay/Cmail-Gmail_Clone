@@ -1,8 +1,12 @@
+import 'package:cmail/Api/google_signin_api.dart';
+import 'package:cmail/Screens/sign_in_screen.dart';
+
 import '../../exports.dart';
 
 class Appbar {
   static SliverAppBar appBar(BuildContext context) {
-    final searchintext = Provider.of<HomeProvider>(context).searchInText;
+    final provider = Provider.of<HomeProvider>(context);
+    final searchintext = provider.searchInText;
     return SliverAppBar(
       toolbarHeight: 50,
       shape: RoundedRectangleBorder(
@@ -18,18 +22,28 @@ class Appbar {
         style: Theme.of(context).textTheme.headline6,
       ),
       actions: [
-        Container(
-          height: 40,
-          width: 40,
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: AssetImage("assets/charan.jpg"),
-            ),
-            border: Border.all(
-              width: 1.0,
-              color: appbarBorderLight,
+        GestureDetector(
+          onTap: () async {
+            await GoogleSignInApi.loginOut();
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => SignInScreen(),
+              ),
+            );
+          },
+          child: Container(
+            height: 40,
+            width: 40,
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: NetworkImage(provider.user.photoUrl!),
+              ),
+              border: Border.all(
+                width: 1.0,
+                color: appbarBorderLight,
+              ),
             ),
           ),
         ),

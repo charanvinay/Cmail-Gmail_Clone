@@ -1,99 +1,209 @@
+import 'dart:convert';
+
 import 'package:cmail/Providers/mail_provider.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:http/http.dart' as http;
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 import '../exports.dart';
 import 'dart:math' as math;
 
-class ComposeMail extends StatelessWidget {
+class ComposeMail extends StatefulWidget {
   const ComposeMail({Key? key}) : super(key: key);
 
   @override
+  _ComposeMailState createState() => _ComposeMailState();
+}
+
+class _ComposeMailState extends State<ComposeMail> {
+  // List<String> attachments = [];
+  // bool isHTML = false;
+  String platformResponse = "";
+
+  TextEditingController fromController = TextEditingController();
+  TextEditingController toController = TextEditingController();
+  TextEditingController ccController = TextEditingController();
+  TextEditingController bccController = TextEditingController();
+  TextEditingController subjectController = TextEditingController();
+  TextEditingController bodyController = TextEditingController();
+
+  // Future<void> send() async {
+  //   final Email email = Email(
+  //     body: bodyController.text,
+  //     subject: subjectController.text,
+  //     recipients: [toController.text],
+  //     cc: [ccController.text],
+  //     bcc: [bccController.text],
+  //     // attachmentPaths: attachments,
+  //     // isHTML: isHTML,
+  //   );
+
+  //   try {
+  //     await FlutterEmailSender.send(email);
+  //     print("sent");
+  //     platformResponse = 'success';
+  //   } catch (error) {
+  //     platformResponse = error.toString();
+  //     print("error " + error.toString());
+  //   }
+  // }
+
+  // Future sendEmail() async {
+  //   final serviceId = 'service_11bu83h';
+  //   final templateId = 'template_9ai5v8q';
+  //   final userId = 'user_OjkdOxchKcJ1bcDHBgCEm';
+  //   final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
+  //   final response = await http.post(
+  //     url,
+  //     headers: {
+  //       'origin': 'http://localhost',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: json.encode(
+  //       {
+  //         'service_id': serviceId,
+  //         'template_id': templateId,
+  //         'user_id': userId,
+  //         'template_params': {
+  //           'from_name': fromController.text.split('@')[0],
+  //           'from_email': fromController.text,
+  //           'to_email': toController.text,
+  //           'to_name': toController.text.split('@')[0],
+  //           'from_subject': subjectController.text,
+  //           'user_message': bodyController.text,
+  //           'bcc_email': bccController.text,
+  //           'cc_email': ccController.text,
+  //         }
+  //       },
+  //     ),
+  //   );
+  //   print("response body " + response.body);
+  // }
+
+  Future sendEmail() async {
+    final provider = Provider.of<HomeProvider>(context, listen: false);
+    final email = provider.user.email;
+    final auth = await provider.user.authentication;
+    // final accessToken = auth.accessToken!;
+
+    // final smtpServer = gmailSaslXoauth2(email, accessToken);
+    // final message = Message()
+    //   ..from = Address(email)
+    //   ..recipients = [toController.text]
+    //   ..subject = subjectController.text
+    //   ..text = bodyController.text;
+
+    try {
+      // await send(message, smtpServer);
+      showSnackBar("Sent email successfully!");
+    } on MailerException catch (e) {
+      print("error we got is $e");
+    }
+  }
+
+  void showSnackBar(String text) {
+    final snackBar = SnackBar(
+      content: Text(
+        text,
+        style: TextStyle(fontSize: 15),
+      ),
+      backgroundColor: Colors.green,
+    );
+
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    MailProvider mailProvider = Provider.of<MailProvider>(context);
-    TextEditingController fromController = TextEditingController();
-    TextEditingController toController = TextEditingController();
-    TextEditingController ccController = TextEditingController();
-    TextEditingController bccController = TextEditingController();
-    TextEditingController subjectController = TextEditingController();
-    TextEditingController bodyController = TextEditingController();
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(
+        context: context,
+        press: sendEmail,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _MailAddressTile(
-                controller: fromController,
-                leadingText: 'From',
-                initialValue: "test@cmail.com",
-              ),
-              dividerMethod(context),
-              _MailAddressTile(
-                controller: toController,
-                leadingText: 'To',
-                isTo: true,
-              ),
-              dividerMethod(context),
-              if (mailProvider.expanded)
-                Column(
-                  children: [
-                    _MailAddressTile(
-                      controller: ccController,
-                      leadingText: 'Cc',
+          child: Consumer<MailProvider>(
+            builder: (context, mailProvider, _) {
+              return Column(
+                children: [
+                  _MailAddressTile(
+                    controller: fromController,
+                    leadingText: 'From',
+                    initialValue: Provider.of<HomeProvider>(context).user.email,
+                  ),
+                  dividerMethod(context),
+                  _MailAddressTile(
+                    controller: toController,
+                    leadingText: 'To',
+                    isTo: true,
+                  ),
+                  dividerMethod(context),
+                  if (mailProvider.expanded)
+                    Column(
+                      children: [
+                        _MailAddressTile(
+                          controller: ccController,
+                          leadingText: 'Cc',
+                        ),
+                        dividerMethod(context),
+                        _MailAddressTile(
+                            controller: bccController, leadingText: 'Bcc'),
+                        dividerMethod(context),
+                      ],
                     ),
-                    dividerMethod(context),
-                    _MailAddressTile(
-                        controller: bccController, leadingText: 'Bcc'),
-                    dividerMethod(context),
-                  ],
-                ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: TextFormField(
-                  controller: subjectController,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).textTheme.headline4!.color,
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: TextFormField(
+                      controller: subjectController,
+                      cursorColor: Theme.of(context).colorScheme.secondary,
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            fontSize: 18,
+                            color: Theme.of(context).textTheme.headline4!.color,
+                          ),
+                      minLines: 1,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                        hintText: "Subject",
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontSize: 16),
                       ),
-                  minLines: 1,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    border: InputBorder.none,
-                    hintText: "Subject",
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .subtitle1!
-                        .copyWith(fontSize: 16),
+                    ),
                   ),
-                ),
-              ),
-              dividerMethod(context),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: TextFormField(
-                  controller: bodyController,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).textTheme.headline4!.color,
+                  dividerMethod(context),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: TextFormField(
+                      controller: bodyController,
+                      cursorColor: Theme.of(context).colorScheme.secondary,
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            fontSize: 18,
+                            color: Theme.of(context).textTheme.headline4!.color,
+                          ),
+                      minLines: 1,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                        hintText: "Compose email",
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontSize: 16),
                       ),
-                  minLines: 1,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    border: InputBorder.none,
-                    hintText: "Compose email",
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .subtitle1!
-                        .copyWith(fontSize: 16),
+                    ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -107,7 +217,7 @@ class ComposeMail extends StatelessWidget {
     );
   }
 
-  AppBar appBar(BuildContext context) {
+  AppBar appBar({required BuildContext context, required VoidCallback press}) {
     return AppBar(
       backgroundColor: Colors.transparent,
       titleSpacing: 0,
@@ -118,7 +228,7 @@ class ComposeMail extends StatelessWidget {
       elevation: 0,
       actions: [
         popupMenuFileMethod(context),
-        ActionButtons(icon: Icons.send_outlined),
+        ActionButtons(tap: press, icon: Icons.send_outlined),
         popupMenuButtonMethod(context),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:cmail/Providers/chats_provider.dart';
 import 'package:cmail/Providers/mail_provider.dart';
 import 'package:cmail/Providers/rooms_provider.dart';
+import 'package:cmail/Screens/sign_in_screen.dart';
 import 'package:cmail/theme.dart';
 // import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       darkTheme: darkThemeData(context),
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
-      home: HomeScreen(),
+      home: SignInScreen(),
     );
   }
 }
