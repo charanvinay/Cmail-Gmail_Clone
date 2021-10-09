@@ -34,6 +34,7 @@ dependencies:
   mailer: ^5.0.2
   page_transition: ^2.0.2
   provider: ^6.0.0
+  shared_preferences: any
 
 flutter_native_splash:
   color: "#202125"

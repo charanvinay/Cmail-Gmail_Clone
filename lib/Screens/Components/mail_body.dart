@@ -11,7 +11,7 @@ class MailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initialLetter = mail.senderName[0];
+    final initialLetter = mail.senderName![0];
 
     return Consumer<HomeProvider>(
       builder: (context, homeProvider, _) {
@@ -56,10 +56,11 @@ class MailBody extends StatelessWidget {
                               homeProvider.colors[initialLetter.toLowerCase()],
                           child: Container(
                             child: Text(
-                              initialLetter,
+                              initialLetter.toUpperCase(),
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white,
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 fontFamily: "Product Sans",
                               ),
                             ),
@@ -70,7 +71,7 @@ class MailBody extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                mail.senderName,
+                                mail.fromMail!,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
@@ -93,7 +94,9 @@ class MailBody extends StatelessWidget {
                           ],
                         ),
                         subtitle: Text(
-                          "to me",
+                          "To :" + homeProvider.userEmail,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                         trailing: Wrap(

@@ -1,5 +1,6 @@
 class MailsModel {
-  String senderName, subject, desc, time;
+  String? senderName, fromMail;
+  String subject, desc, time, fromName, toMail;
   bool isStarred;
 
   MailsModel({
@@ -7,11 +8,14 @@ class MailsModel {
     required this.subject,
     required this.desc,
     required this.time,
+    required this.fromMail,
+    required this.fromName,
+    required this.toMail,
     this.isStarred = false,
   });
 }
 
-List<MailsModel> mails = [
+List<MailsModel>? mails = [
   MailsModel(
     senderName: "Kiran siva sai",
     time: "13:03",
@@ -19,10 +23,15 @@ List<MailsModel> mails = [
         "Here is your chance to bag interview offers from L'Oréal with it's Sustainability Hiring Challenge 2021 | Only 2 days left!",
     desc:
         "Launching its fifth edition, L'Oréal is back with the Sustainability Challenge 2021. It is an all-Digital Challenge that resonates with L’Oréal’s sustainability program. This year, we are partnering with the world’s leading mass-market natural beauty brand – Garnier.\n\nApart from experience, the winners have a lot in store for them including pre-placement interviews (PPIs) with L'Oréal India and lots of exciting gift hampers!",
+    fromMail: "kiransivasai785@gmail.com",
+    fromName: "Kiran siva sai",
+    toMail: 'charanvinay778@gmail.com',
   ),
   MailsModel(
     senderName: "TCS NQT",
-    isStarred: true,
+    fromMail: "tcsnqt@gmail.com",
+    fromName: "TCS NQT",
+    toMail: 'charanvinay778@gmail.com',
     time: "12:14",
     subject:
         "TCS NQT View your Exam Schedule and Login Details for Actual/Final Exam - Reminder",
@@ -31,6 +40,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Hashwanth",
+    fromMail: "haswanth8465@gmail.com",
+    fromName: "Haswanth",
+    toMail: 'charanvinay778@gmail.com',
     time: "11:49",
     subject: "Cuvette Tech - Our new website is LIVE now.",
     desc:
@@ -38,6 +50,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Yashwanth sai",
+    fromMail: "yaswanthsai7853@gmail.com",
+    fromName: "Yashwanth sai",
+    toMail: 'charanvinay778@gmail.com',
     time: "10:12",
     subject: "Hey Charan, you are invited to Expert Meet'21 😇",
     desc:
@@ -45,7 +60,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Arvindh Ippili",
-    isStarred: true,
+    fromMail: "arvindhippili4654@gmail.com",
+    fromName: "Arvindh ippili",
+    toMail: 'charanvinay778@gmail.com',
     time: "10:05",
     subject: "GitHub's The ReadME Project v9.21",
     desc:
@@ -53,7 +70,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Chegg India",
-    isStarred: true,
+    fromMail: "cheggindia@gmail.com",
+    fromName: "Chegg india",
+    toMail: 'charanvinay778@gmail.com',
     time: "09:37",
     subject: "Payment Initiated to your account",
     desc:
@@ -61,6 +80,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Manohar Kademasetti",
+    fromMail: "manoharkademasetti64521@gmail.com",
+    fromName: "Manohar kademasetti",
+    toMail: 'charanvinay778@gmail.com',
     time: "09:05",
     subject:
         "Announcing Log Drains: Manage traffic and serverless logs in Datadog",
@@ -69,6 +91,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Kiran siva sai",
+    fromMail: "kiransivasai@gmail.com",
+    fromName: "Kiran siva sai",
+    toMail: 'charanvinay778@gmail.com',
     time: "13:03",
     subject:
         "Here is your chance to bag interview offers from L'Oréal with it's Sustainability Hiring Challenge 2021 | Only 2 days left!",
@@ -77,6 +102,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "TCS NQT",
+    fromMail: "tcsnqt@gmail.com",
+    fromName: "TCS NQT",
+    toMail: 'charanvinay778@gmail.com',
     time: "12:14",
     subject:
         "TCS NQT View your Exam Schedule and Login Details for Actual/Final Exam - Reminder",
@@ -85,14 +113,19 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Hashwanth",
+    fromMail: "haswanth8465@gmail.com",
+    fromName: "Haswanth",
+    toMail: 'charanvinay778@gmail.com',
     time: "11:49",
-    isStarred: true,
     subject: "Cuvette Tech - Our new website is LIVE now.",
     desc:
         "Hi,We have just launched our new website and would like you to check it out. You can now directly login on website -> Create your profile -> And start applying for the internships.\n\nOnce you enter the dashboard, there is a suggestion/ help section on top from where you can give us your valuable feedback. If you face any issue while using the dashboard or have any suggestions for us, do drop your message there. \n\nThere are lots of exciting opportunities coming on our platform everyday now. You can invite your friends as well to help each other in getting right opportunities in this pandemic time. ",
   ),
   MailsModel(
     senderName: "Yashwanth sai",
+    fromMail: "yaswanthsai7853@gmail.com",
+    fromName: "Yashwanth sai",
+    toMail: 'charanvinay778@gmail.com',
     time: "10:12",
     subject: "Hey Charan, you are invited to Expert Meet'21 😇",
     desc:
@@ -100,6 +133,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Arvindh Ippili",
+    fromMail: "arvindhippili4654@gmail.com",
+    fromName: "Arvindh ippili",
+    toMail: 'charanvinay778@gmail.com',
     time: "10:05",
     subject: "GitHub's The ReadME Project v9.21",
     desc:
@@ -107,6 +143,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Chegg India",
+    fromMail: "cheggindia@gmail.com",
+    fromName: "Chegg india",
+    toMail: 'charanvinay778@gmail.com',
     time: "09:37",
     subject: "Payment Initiated to your account",
     desc:
@@ -114,6 +153,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Manohar Kademasetti",
+    fromMail: "manoharkademasetti64521@gmail.com",
+    fromName: "Manohar kademasetti",
+    toMail: 'charanvinay778@gmail.com',
     time: "09:05",
     subject:
         "Announcing Log Drains: Manage traffic and serverless logs in Datadog",
@@ -122,6 +164,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Kiran siva sai",
+    fromMail: "kiransivasai@gmail.com",
+    fromName: "Kiran siva sai",
+    toMail: 'charanvinay778@gmail.com',
     time: "13:03",
     subject:
         "Here is your chance to bag interview offers from L'Oréal with it's Sustainability Hiring Challenge 2021 | Only 2 days left!",
@@ -130,6 +175,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "TCS NQT",
+    fromMail: "tcsnqt@gmail.com",
+    fromName: "TCS NQT",
+    toMail: 'charanvinay778@gmail.com',
     time: "12:14",
     subject:
         "TCS NQT View your Exam Schedule and Login Details for Actual/Final Exam - Reminder",
@@ -138,6 +186,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Hashwanth",
+    fromMail: "haswanth8465@gmail.com",
+    fromName: "Haswanth",
+    toMail: 'charanvinay778@gmail.com',
     time: "11:49",
     subject: "Cuvette Tech - Our new website is LIVE now.",
     desc:
@@ -145,6 +196,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Yashwanth sai",
+    fromMail: "yaswanthsai7853@gmail.com",
+    fromName: "Yashwanth sai",
+    toMail: 'charanvinay778@gmail.com',
     time: "10:12",
     subject: "Hey Charan, you are invited to Expert Meet'21 😇",
     desc:
@@ -152,6 +206,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Arvindh Ippili",
+    fromMail: "arvindhippili4654@gmail.com",
+    fromName: "Arvindh ippili",
+    toMail: 'charanvinay778@gmail.com',
     time: "10:05",
     subject: "GitHub's The ReadME Project v9.21",
     desc:
@@ -159,6 +216,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Chegg India",
+    fromMail: "cheggindia@gmail.com",
+    fromName: "Chegg india",
+    toMail: 'charanvinay778@gmail.com',
     time: "09:37",
     subject: "Payment Initiated to your account",
     desc:
@@ -166,6 +226,9 @@ List<MailsModel> mails = [
   ),
   MailsModel(
     senderName: "Manohar Kademasetti",
+    fromMail: "manoharkademasetti64521@gmail.com",
+    fromName: "Manohar kademasetti",
+    toMail: 'charanvinay778@gmail.com',
     time: "09:05",
     subject:
         "Announcing Log Drains: Manage traffic and serverless logs in Datadog",

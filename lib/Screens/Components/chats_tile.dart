@@ -17,6 +17,7 @@ class ChatTile extends StatelessWidget {
     final initialLetter = chat.name[0];
     return Consumer<ChatsProvider>(builder: (context, chatsProvider, _) {
       return ListTile(
+        onTap: () {},
         title: Text(
           chat.name,
           style: Theme.of(context).textTheme.headline5,

@@ -3,14 +3,12 @@ import 'package:provider/provider.dart';
 
 import 'exports.dart';
 
-Consumer bottomNav(BuildContext context) {
+Consumer bottomNav({required BuildContext context, bool fabIsVisible = true}) {
   return Consumer<HomeProvider>(
     builder: (context, homeProvider, _) {
       return AnimatedContainer(
         duration: Duration(milliseconds: 200),
-        height: Provider.of<HomeProvider>(context).fabIsVisible
-            ? kBottomNavigationBarHeight
-            : 0,
+        height: fabIsVisible ? kBottomNavigationBarHeight : 0,
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: homeProvider.currentScreen,
@@ -47,18 +45,12 @@ Consumer bottomNav(BuildContext context) {
   );
 }
 
-FloatingActionButton fab(BuildContext context, String text, IconData icon) {
+FloatingActionButton fab(BuildContext context, String text, IconData icon,
+    VoidCallback press, bool fabIsVisible) {
   return FloatingActionButton.extended(
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ComposeMail(),
-        ),
-      );
-    },
-    isExtended: Provider.of<HomeProvider>(context).fabIsVisible,
-    label: Provider.of<HomeProvider>(context).fabIsVisible
+    onPressed: press,
+    isExtended: fabIsVisible,
+    label: fabIsVisible
         ? Text(
             text,
             style: Theme.of(context).textTheme.button,

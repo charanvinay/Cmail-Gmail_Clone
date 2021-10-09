@@ -1,10 +1,5 @@
-import 'dart:convert';
-
 import 'package:cmail/Providers/mail_provider.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:http/http.dart' as http;
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../exports.dart';
 import 'dart:math' as math;
@@ -83,8 +78,26 @@ class _ComposeMailState extends State<ComposeMail> {
 
   Future sendEmail() async {
     final provider = Provider.of<HomeProvider>(context, listen: false);
-    final email = provider.user.email;
-    final auth = await provider.user.authentication;
+    final email = provider.userEmail;
+    final to = toController.text;
+    final cc = toController.text;
+    final bcc = bccController.text;
+    final subject = subjectController.text;
+    final body = bodyController.text;
+    DateTime now = DateTime.now();
+    String fromname = email.split("@")[0];
+
+    MailsModel mail = MailsModel(
+      senderName: email.split("@")[0],
+      subject: subject,
+      desc: body,
+      time: (now.hour.toString() + ":" + now.minute.toString()),
+      fromMail: email,
+      fromName: fromname,
+      toMail: "To: $to",
+    );
+
+    // final auth = await provider.user.authentication;
     // final accessToken = auth.accessToken!;
 
     // final smtpServer = gmailSaslXoauth2(email, accessToken);
@@ -94,21 +107,45 @@ class _ComposeMailState extends State<ComposeMail> {
     //   ..subject = subjectController.text
     //   ..text = bodyController.text;
 
-    try {
-      // await send(message, smtpServer);
-      showSnackBar("Sent email successfully!");
-    } on MailerException catch (e) {
-      print("error we got is $e");
+    // try {
+
+    //   // await send(message, smtpServer);
+    //   // showSnackBar(text: "Sent email successfully!",color: green);
+    // } on MailerException catch (e) {
+    //   print("error we got is $e");
+    // }
+    if (to.isEmpty) {
+      showSnackBar(text: "Enter valid To address");
+    } else if (subject.isEmpty) {
+      showSnackBar(text: "Enter valid subject");
+    } else if (body.isEmpty) {
+      showSnackBar(text: "Enter valid message");
+    } else {
+      showSnackBar(text: "Email sent successfully!", color: green);
+      provider.sentMail(mail);
+      Navigator.of(context).pushReplacement(PageTransition(
+        child: HomeScreen(),
+        type: PageTransitionType.leftToRight,
+      )
+          // MaterialPageRoute(
+          //   builder: (context) => ,
+          // ),
+          );
     }
   }
 
-  void showSnackBar(String text) {
+  void showSnackBar({required String text, Color color = darkRed}) {
     final snackBar = SnackBar(
       content: Text(
         text,
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 15, color: Colors.white),
       ),
-      backgroundColor: Colors.green,
+      padding: EdgeInsets.only(left: 10, right: 2, top: 4, bottom: 4),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: color,
     );
 
     ScaffoldMessenger.of(context)
@@ -132,7 +169,7 @@ class _ComposeMailState extends State<ComposeMail> {
                   _MailAddressTile(
                     controller: fromController,
                     leadingText: 'From',
-                    initialValue: Provider.of<HomeProvider>(context).user.email,
+                    initialValue: Provider.of<HomeProvider>(context).userEmail,
                   ),
                   dividerMethod(context),
                   _MailAddressTile(

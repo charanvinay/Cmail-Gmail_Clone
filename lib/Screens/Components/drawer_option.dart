@@ -17,6 +17,10 @@ class DrawerOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String starredCount =
+        Provider.of<HomeProvider>(context).starredMails.length.toString();
+    final String sentCount =
+        Provider.of<HomeProvider>(context).sentMails.length.toString();
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: ListTile(
@@ -66,11 +70,14 @@ class DrawerOption extends StatelessWidget {
                   )
                 : Text(
                     drawerOption.name == "Starred"
-                        ? Provider.of<HomeProvider>(context)
-                            .starredMails
-                            .length
-                            .toString()
-                        : drawerOption.count,
+                        ? starredCount == "0"
+                            ? ""
+                            : starredCount
+                        : drawerOption.name == "Sent"
+                            ? sentCount == "0"
+                                ? ""
+                                : sentCount
+                            : drawerOption.count,
                     style: TextStyle(
                       fontSize: 14,
                       fontFamily: "Product Sans",

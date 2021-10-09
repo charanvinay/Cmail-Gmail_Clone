@@ -1,4 +1,3 @@
-import 'package:cmail/Models/chats_model.dart';
 import 'package:cmail/Providers/chats_provider.dart';
 import 'package:cmail/Screens/Components/chats_tile.dart';
 
@@ -12,28 +11,49 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  late ScrollController chatController;
+  bool isFabVisible = true;
   @override
   void initState() {
-    super.initState();
-    final provider = Provider.of<HomeProvider>(context, listen: false);
-    provider.controller = ScrollController();
-    provider.controller.addListener(() {
-      provider.setScroll();
+    chatController = ScrollController();
+    chatController.addListener(() {
+      setState(() {
+        isFabVisible = chatController.position.userScrollDirection ==
+            ScrollDirection.forward;
+      });
     });
+    super.initState();
   }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final provider = Provider.of<HomeProvider>(context, listen: false);
+  //   provider.controller = ScrollController();
+  //   provider.controller.addListener(() {
+  //     provider.setScroll();
+  //   });
+  // }
 
   @override
   void dispose() {
-    Provider.of<HomeProvider>(context, listen: false).controller.dispose();
+    chatController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext chatsContext) {
     return Scaffold(
-      floatingActionButton:
-          fab(context, "New chat", Icons.chat_bubble_outline_outlined),
-      bottomNavigationBar: bottomNav(context),
+      floatingActionButton: fab(
+        context,
+        "New chat",
+        Icons.chat_bubble_outline_outlined,
+        () {
+          print("chat tap disabled");
+        },
+        isFabVisible,
+      ),
+      bottomNavigationBar:
+          bottomNav(context: context, fabIsVisible: isFabVisible),
       drawer: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Theme.of(context).scaffoldBackgroundColor,
@@ -41,8 +61,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
         child: drawer(context),
       ),
       body: CustomScrollView(
-        controller:
-            Provider.of<HomeProvider>(context, listen: false).controller,
+        controller: chatController,
         slivers: [
           SliverPadding(
             padding: EdgeInsets.all(15),
@@ -76,7 +95,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         margin: EdgeInsets.symmetric(vertical: 25),
                         child: Center(
                           child: Text(
-                            "Nothing in chats}",
+                            "Nothing in chats",
                             style: TextStyle(
                               fontSize: 20,
                               color: textColorLight,

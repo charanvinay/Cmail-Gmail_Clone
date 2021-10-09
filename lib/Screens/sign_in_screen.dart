@@ -1,4 +1,3 @@
-import 'package:cmail/Api/google_signin_api.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../exports.dart';
@@ -11,7 +10,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  get label => null;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,38 +22,55 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Container(
           padding: EdgeInsets.all(20),
           child: Center(
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.black,
-                minimumSize: Size(double.infinity, 50),
-              ),
-              onPressed: signIn,
-              icon: FaIcon(FontAwesomeIcons.google, color: darkRed),
-              label: Text("Sign in with Google"),
+            child: Column(
+              children: [
+                Spacer(flex: 1),
+                Text(
+                  "Cmail",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(fontSize: 25),
+                ),
+                Spacer(flex: 2),
+                Image.asset(
+                  "assets/mail.png",
+                  width: MediaQuery.of(context).size.width * 0.5,
+                ),
+                Spacer(flex: 4),
+                Text(
+                  "Welcome!!!",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontSize: 35),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Why late? Signin fast and check in. Something is waiting for you",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline5!,
+                ),
+                Spacer(flex: 4),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  onPressed: () {
+                    Provider.of<HomeProvider>(context, listen: false)
+                        .signIn(context);
+                  },
+                  icon: FaIcon(FontAwesomeIcons.google, color: darkRed),
+                  label: Text("Sign in with Google"),
+                ),
+                Spacer(flex: 3),
+              ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  Future signIn() async {
-    final user = await GoogleSignInApi.login();
-
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Sign in Failed"),
-        ),
-      );
-    } else {
-      Provider.of<HomeProvider>(context, listen: false).setUserAccount(user);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
-    }
   }
 }

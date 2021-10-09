@@ -8,14 +8,16 @@ class MailTile extends StatelessWidget {
     Key? key,
     required this.mail,
     required this.index,
+    this.isSent = false,
   }) : super(key: key);
 
   final MailsModel mail;
   final int index;
+  final bool isSent;
 
   @override
   Widget build(BuildContext context) {
-    final initialLetter = mail.senderName[0];
+    final initialLetter = mail.senderName![0];
 
     return Consumer<HomeProvider>(
       builder: (context, homeProvider, _) {
@@ -52,7 +54,7 @@ class MailTile extends StatelessWidget {
               ),
               padding: EdgeInsets.only(left: 10, right: 2, top: 4, bottom: 4),
               content: Text('1 archieved'),
-              behavior: SnackBarBehavior.fixed,
+              behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -79,7 +81,7 @@ class MailTile extends StatelessWidget {
                       homeProvider.colors[initialLetter.toLowerCase()],
                   child: Container(
                     child: Text(
-                      initialLetter,
+                      initialLetter.toUpperCase(),
                       style: TextStyle(
                         fontSize: 25,
                         color: Theme.of(context).scaffoldBackgroundColor,
@@ -89,7 +91,7 @@ class MailTile extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  mail.senderName,
+                  isSent ? mail.toMail : mail.fromName,
                   style: Theme.of(context).textTheme.headline5,
                 ),
                 subtitle: Column(

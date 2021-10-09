@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../exports.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,13 +12,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    Provider.of<HomeProvider>(context, listen: false).initStarred();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    print("home build");
     return Scaffold(
       body: SafeArea(
         child: Container(
